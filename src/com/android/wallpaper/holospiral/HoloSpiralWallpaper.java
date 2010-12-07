@@ -58,7 +58,7 @@ public class HoloSpiralWallpaper extends WallpaperService {
             }
 
             if (mRenderScript != null) {
-                mRenderScript.contextSetSurface(0, 0, null);
+                mRenderScript.setSurface(null, 0, 0);
                 mRenderScript.destroy();
                 mRenderScript = null;
             }
@@ -67,13 +67,10 @@ public class HoloSpiralWallpaper extends WallpaperService {
         @Override
         public void onSurfaceCreated(SurfaceHolder surfaceHolder) {
             super.onSurfaceCreated(surfaceHolder);
-            Surface surface = null;
-            while (surface == null) {
-                surface = surfaceHolder.getSurface();
-            }
+
             RenderScriptGL.SurfaceConfig sc = new RenderScriptGL.SurfaceConfig();
             mRenderScript = new RenderScriptGL(sc);
-            mRenderScript.contextSetPriority(RenderScript.Priority.LOW);
+            mRenderScript.setPriority(RenderScript.Priority.LOW);
         }
 
         @Override
@@ -88,7 +85,7 @@ public class HoloSpiralWallpaper extends WallpaperService {
             super.onSurfaceChanged(surfaceHolder, format, width, height);
 
             if (mRenderScript != null) {
-                mRenderScript.contextSetSurface(width, height, surfaceHolder.getSurface());
+                mRenderScript.setSurface(surfaceHolder, width, height);
             }
 
             if (mWallpaperRS == null) {

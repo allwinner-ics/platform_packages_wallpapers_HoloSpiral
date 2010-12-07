@@ -46,9 +46,9 @@ public class HoloSpiralView extends RSSurfaceView {
         }
 
         if (mRenderScript != null) {
-            mRenderScript.contextSetSurface(0, 0, null);
+            mRenderScript.setSurface(null, 0, 0);
             mRenderScript = null;
-            destroyRenderScript();
+            destroyRenderScriptGL();
         }
     }
 
@@ -61,8 +61,8 @@ public class HoloSpiralView extends RSSurfaceView {
             surface = surfaceHolder.getSurface();
         }
         RenderScriptGL.SurfaceConfig sc = new RenderScriptGL.SurfaceConfig();
-        mRenderScript = createRenderScript(sc);
-        mRenderScript.contextSetPriority(RenderScript.Priority.LOW);
+        mRenderScript = createRenderScriptGL(sc);
+        mRenderScript.setPriority(RenderScript.Priority.LOW);
 
         surfaceHolder.setSizeFromLayout();
         surfaceHolder.setFormat(PixelFormat.RGBA_8888);
@@ -78,7 +78,7 @@ public class HoloSpiralView extends RSSurfaceView {
     public void surfaceChanged(SurfaceHolder surfaceHolder, int format, int width, int height) {
         super.surfaceChanged(surfaceHolder, format, width, height);
         if (mRenderScript != null) {
-            mRenderScript.contextSetSurface(width, height, surfaceHolder.getSurface());
+            mRenderScript.setSurface(surfaceHolder, width, height);
         }
 
         if (mWallpaperRS == null) {
@@ -90,17 +90,15 @@ public class HoloSpiralView extends RSSurfaceView {
         mWallpaperWidth = width;
     }
 
-    @Override
     public void onResume() {
-        super.onResume();
+        resume();
         if (mWallpaperRS != null) {
             mWallpaperRS.start();
         }
     }
 
-    @Override
     public void onPause() {
-        super.onPause();
+        pause();
         if (mWallpaperRS != null) {
             mWallpaperRS.stop();
         }

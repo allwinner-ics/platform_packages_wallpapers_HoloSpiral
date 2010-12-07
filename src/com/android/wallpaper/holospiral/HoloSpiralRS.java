@@ -84,11 +84,11 @@ public class HoloSpiralRS {
     }
 
     public void start() {
-        mRS.contextBindRootScript(mScript);
+        mRS.bindRootScript(mScript);
     }
 
     public void stop() {
-        mRS.contextBindRootScript(null);
+        mRS.bindRootScript(null);
     }
 
     public void resize(int width, int height) {
@@ -96,7 +96,7 @@ public class HoloSpiralRS {
     }
 
     private void createScript() {
-        mScript = new ScriptC_holo_spiral(mRS, mResources, R.raw.holo_spiral, true);
+        mScript = new ScriptC_holo_spiral(mRS, mResources, R.raw.holo_spiral);
         mScript.set_gNearPlane(NEAR_PLANE);
         mScript.set_gFarPlane(FAR_PLANE);
 
