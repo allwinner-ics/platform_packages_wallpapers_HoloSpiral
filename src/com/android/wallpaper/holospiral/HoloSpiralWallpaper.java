@@ -69,7 +69,7 @@ public class HoloSpiralWallpaper extends WallpaperService {
             super.onSurfaceCreated(surfaceHolder);
 
             RenderScriptGL.SurfaceConfig sc = new RenderScriptGL.SurfaceConfig();
-            mRenderScript = new RenderScriptGL(sc);
+            mRenderScript = new RenderScriptGL(HoloSpiralWallpaper.this, sc);
             mRenderScript.setPriority(RenderScript.Priority.LOW);
         }
 
