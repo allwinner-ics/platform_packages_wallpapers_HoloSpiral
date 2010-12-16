@@ -181,7 +181,6 @@ public class HoloSpiralRS {
         Bitmap bmp = BitmapFactory.decodeResource(
                 mResources, R.drawable.points_red_green, null);
         Allocation pointTexture = Allocation.createFromBitmap(mRS, bmp);
-        pointTexture.uploadToTexture(0);
         mScript.set_gPointTexture(pointTexture);
     }
 
