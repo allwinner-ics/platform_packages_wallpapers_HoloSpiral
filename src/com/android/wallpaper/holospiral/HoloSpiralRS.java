@@ -30,7 +30,8 @@ import android.renderscript.Element;
 import android.renderscript.Float3;
 import android.renderscript.Float4;
 import android.renderscript.Mesh;
-import android.renderscript.Primitive;
+import android.renderscript.Mesh.Primitive;
+import android.renderscript.Program;
 import android.renderscript.ProgramFragment;
 import android.renderscript.ProgramStore;
 import android.renderscript.ProgramVertex;
@@ -116,13 +117,13 @@ public class HoloSpiralRS {
         vertexShaderConstants.set_maxPointSize(0, MAX_POINT_SIZE, false);
         vertexShaderConstants.copyAll();
 
-        ProgramVertex.ShaderBuilder backgroundBuilder = new ProgramVertex.ShaderBuilder(mRS);
+        ProgramVertex.Builder backgroundBuilder = new ProgramVertex.Builder(mRS);
         backgroundBuilder.setShader(mResources, R.raw.vertex_background);
         backgroundBuilder.addInput(ScriptField_VertexColor_s.createElement(mRS));
         ProgramVertex programVertexBackground = backgroundBuilder.create();
         mScript.set_gPVBackground(programVertexBackground);
 
-        ProgramVertex.ShaderBuilder geometryBuilder = new ProgramVertex.ShaderBuilder(mRS);
+        ProgramVertex.Builder geometryBuilder = new ProgramVertex.Builder(mRS);
         geometryBuilder.setShader(mResources, R.raw.vertex_geometry);
         geometryBuilder.addConstant(vertexShaderConstants.getAllocation().getType());
         geometryBuilder.addInput(ScriptField_VertexColor_s.createElement(mRS));
@@ -132,14 +133,14 @@ public class HoloSpiralRS {
     }
 
     private void createFragmentPrograms() {
-        ProgramFragment.ShaderBuilder backgroundBuilder = new ProgramFragment.ShaderBuilder(mRS);
+        ProgramFragment.Builder backgroundBuilder = new ProgramFragment.Builder(mRS);
         backgroundBuilder.setShader(mResources, R.raw.fragment_background);
         ProgramFragment programFragmentBackground = backgroundBuilder.create();
         mScript.set_gPFBackground(programFragmentBackground);
 
-        ProgramFragment.ShaderBuilder geometryBuilder = new ProgramFragment.ShaderBuilder(mRS);
+        ProgramFragment.Builder geometryBuilder = new ProgramFragment.Builder(mRS);
         geometryBuilder.setShader(mResources, R.raw.fragment_geometry);
-        geometryBuilder.setTextureCount(1);
+        geometryBuilder.addTexture(Program.TextureType.TEXTURE_2D);
         ProgramFragment programFragmentGeometry = geometryBuilder.create();
         programFragmentGeometry.bindSampler(Sampler.CLAMP_LINEAR(mRS), 0);
         mScript.set_gPFGeometry(programFragmentGeometry);
@@ -151,7 +152,7 @@ public class HoloSpiralRS {
                 ProgramStore.BlendDstFunc.ONE_MINUS_SRC_ALPHA);
         mScript.set_gPSGeometry(builder.create());
         builder.setBlendFunc(ProgramStore.BlendSrcFunc.ONE, ProgramStore.BlendDstFunc.ZERO);
-        builder.setDitherEnable(true);
+        builder.setDitherEnabled(true);
         mScript.set_gPSBackground(builder.create());
     }
 
@@ -162,7 +163,7 @@ public class HoloSpiralRS {
                 POINTS_COLOR_BLUE, POINTS_COLOR_GREEN);
 
         Mesh.AllocationBuilder innerPointBuilder = new Mesh.AllocationBuilder(mRS);
-        innerPointBuilder.addIndexType(Primitive.POINT);
+        innerPointBuilder.addIndexSetType(Primitive.POINT);
         innerPointBuilder.addVertexAllocation(innerPoints.getAllocation());
         mScript.set_gInnerGeometry(innerPointBuilder.create());
 
@@ -172,7 +173,7 @@ public class HoloSpiralRS {
                 POINTS_COLOR_AQUA, POINTS_COLOR_AQUA);
 
         Mesh.AllocationBuilder outerPointBuilder = new Mesh.AllocationBuilder(mRS);
-        outerPointBuilder.addIndexType(Primitive.POINT);
+        outerPointBuilder.addIndexSetType(Primitive.POINT);
         outerPointBuilder.addVertexAllocation(outerPoints.getAllocation());
         mScript.set_gOuterGeometry(outerPointBuilder.create());
     }
@@ -207,7 +208,7 @@ public class HoloSpiralRS {
         fullQuad.copyAll();
 
         Mesh.AllocationBuilder backgroundBuilder = new Mesh.AllocationBuilder(mRS);
-        backgroundBuilder.addIndexType(Primitive.TRIANGLE_STRIP);
+        backgroundBuilder.addIndexSetType(Primitive.TRIANGLE_STRIP);
         backgroundBuilder.addVertexAllocation(fullQuad.getAllocation());
         mScript.set_gBackgroundMesh(backgroundBuilder.create());
     }
