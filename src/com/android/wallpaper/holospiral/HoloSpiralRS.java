@@ -56,10 +56,10 @@ public class HoloSpiralRS {
 
     /* Colors */
     private static final int POINTS_COLOR_BLUE = Color.argb(179, 0, 0, 255);
-    private static final int POINTS_COLOR_GREEN = Color.argb(179, 0, 255, 255);
-    private static final int POINTS_COLOR_AQUA = Color.argb(179, 38, 120, 148);
-    private static final int BG_COLOR_BLACK = Color.argb(255, 8, 19, 46);
-    private static final int BG_COLOR_BLUE = Color.argb(255, 26, 56, 99);
+    private static final int POINTS_COLOR_GREEN = Color.argb(210, 166, 51, 255);
+    private static final int POINTS_COLOR_AQUA = Color.argb(220, 38, 120, 148);
+    private static final int BG_COLOR_BLACK = Color.argb(255, 26, 26, 83);
+    private static final int BG_COLOR_BLUE = Color.argb(255, 8, 0, 26);
 
     private ScriptC_holo_spiral mScript;
     private RenderScriptGL mRS = null;
