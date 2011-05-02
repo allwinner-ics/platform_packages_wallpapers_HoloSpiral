@@ -145,7 +145,7 @@ void init() {
     rsMatrixRotate(&gTransformedModelView, -10.0f, 1.0f, 0.0f, 0.0f);
 }
 
-int root(int launchID) {
+int root(void) {
     float now = rsUptimeMillis();
     float elapsed = (now - lastTime) * 0.001f;
     lastTime = now;
